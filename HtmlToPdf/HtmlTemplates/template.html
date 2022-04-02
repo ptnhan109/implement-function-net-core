@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <title>Html to Pdf using DinkToPdf</title>
+        <style>
+            .text-center{
+              text-align:center
+            }
+            .text-weight-normal{
+              font-weight: normal
+            }
+            .text-italic {
+              font-style: italic
+            }
+            table {
+              width: 100%
+            }
+            table, th, td {
+               border: 1px solid #a29fa5;border-collapse: collapse;
+            }
+          </style>
+    </head>
+    <body>
+        <div style="width: 100%;">
+            <h2>PERSIONS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Day of Birth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
