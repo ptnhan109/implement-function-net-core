@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-6">
+        <div class="form-group">
+            <label for="barCode">BarCode</label>
+            <input class="form-control" id="barCode" placeholder="Enter barcode">
+        </div>
+        <button type="button" id="btn-generate-barcode" class="btn btn-primary">Generate</button>
+        <button type="button" id="btn-print-barcode" class="btn btn-primary">Print</button>
+    </div>
+    <div class="col-sm-6 col-6">
+        <div class="justify-content-center">
+            <img src="/barcode-default.jpg" id="image-barcode" />
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#btn-generate-barcode").click(function () {
+            let barcode = $("#barCode").val();
+            let url = '@Url.Action("GenerateBarCode","Home")';
+
+            if (barcode != "") {
+                $.ajax({
+                    url: url,
+                    data: {
+                        data: barcode
+                    },
+                    success: function (data) {
+                        $("#image-barcode").attr("src", "/barcode.png");
+                    }
+                })
+            }
+        });
+
+        $("#btn-print-barcode").click(function () {
+            let url = '@Url.Action("PrintBarCode","Home")';
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    printBarCode(data);
+                }
+            });
+        });
+
+
+    });
+
+    function printBarCode(html) {
+        var framePrint = document.createElement("iframe");
+        framePrint.name = "print-barcode";
+        framePrint.style.position = "absolute";
+        framePrint.style.top = "-1000000000px";
+        document.body.appendChild(framePrint);
+        var frameDoc = framePrint.contentWindow ? framePrint.contentWindow : framePrint.contentDocument.document ? framePrint.contentDocument.document : framePrint.contentDocument;
+        frameDoc.document.open();
+        frameDoc.document.write(html);
+        frameDoc.document.close();
+
+        setTimeout(function () {
+            window.frames["print-barcode"].focus();
+            window.frames["print-barcode"].print();
+            document.body.removeChild(framePrint);
+
+        },200);
+
+        return false;
+    }
+</script>
